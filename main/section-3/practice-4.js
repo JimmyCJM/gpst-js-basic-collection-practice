@@ -1,25 +1,19 @@
 'use strict';
 
 function find(collection, ch) {
-    for (let item of collection) {
-        if (item.key === ch) {
-            return item;
-        }
-    }
-
-    return null;
+    return  collection.filter(value => (value.key === ch))[0];
 }
 
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item =>{
         let obj = find(result, item)
         if (obj) {
             obj.count++;
         } else {
             result.push({key: item, count: 1});
         }
-    }
+    });
     return result;
 }
 
@@ -36,38 +30,28 @@ function push(result, key, count) {
 
 function expand(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item =>{
         if (item.length === 1) {
             result.push(item);
         } else {
             let {key, count} = split(item);
             push(result, key, count);
         }
-    }
+    })
     return result;
 }
 
 function includes(collection, ch) {
-    for (let item of collection) {
-        if (item === ch) {
-            return true;
-        }
-    }
-
-    return false;
+    return collection.some(value =>(value === ch));
 }
 
 function discount(collection, promotionItems) {
-    let result = [];
-    for (let item of collection) {
-        let key = item.key;
-        let count = item.count;
-        if (includes(promotionItems, key)) {
-            count = count - Math.floor(count / 3);
+    return collection.filter(item => {
+        if (includes(promotionItems, item.key)) {
+            item.count = item.count - Math.floor(item.count / 3);
         }
-        result.push({key, count});
-    }
-    return result;
+        return item;
+    })
 }
 
 module.exports = function createUpdatedCollection(collectionA, objectB) {

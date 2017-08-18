@@ -1,25 +1,15 @@
 'use strict';
 
 function find(collection, ch) {
-    for (let item of collection) {
-        if (item.name === ch) {
-            return item;
-        }
-    }
-
-    return null;
+    return  collection.filter(value => (value.key === ch))[0];
 }
 
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item =>{
         let obj = find(result, item)
-        if (obj) {
-            obj.summary++;
-        } else {
-            result.push({name: item, summary: 1});
-        }
-    }
+        obj?obj.summary++:result.push({name: item, summary: 1});
+    })
     return result;
 }
 
